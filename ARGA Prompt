@@ -1,0 +1,188 @@
+Great — here's a comprehensive UI & UX-focused strategy for the AR Garden App (ARGA) as requested, structured into three deliverables:
+---
+
+✅ UI Wireframe Specification (UX-First)
+
+
+🧩 1. Login & Role Setup
+
+- Login Screen UI
+	- Standard login (email/password)
+	- Social login (Google, Apple)
+	- Role selection toggle (Homeowner / Gardener / Housekeeper / Landscaper)
+	- Voice login via Google Assistant / Alexa (optional setup)
+- UI Patterns:
+	- Clean minimal UI with 2-column layout
+	- Use card-style role selectors
+	- Offer accessibility quick links (font size, voice commands)
+---
+
+📷 2. Live Camera & AR Visual Task Interface
+
+- AR Task Creator Screen:
+	- Live Camera Feed
+		- Tap-to-freeze OR real-time drawing
+		- Drawing tools (circle, arrow, text box, marker color)
+	- AR Overlay Options
+		- “+ Add Task” → Choose plant/tool/location
+		- Voice note button 🎙️ → record + transcribe
+	- Buttons:
+		- Save & Share | Cancel | Voice Guide
+- UI Patterns:
+	- Floating action buttons (FAB) for quick task creation
+	- Bottom toolbar: Camera | Markup | Tasks | Voice | Settings
+---
+
+🛠 3. Homeowner Task Dashboard
+
+- Task List by Zone (front yard, back yard, etc.)
+- “View Garden Map” (stitched image access)
+- “Add Task” (camera or gallery)
+- Toggle: Weekly View | Monthly View
+- Push notifications pane: status updates
+- Payments tab (for e-commerce add-on users)
+---
+
+📱 4. Gardener/Personnel Dashboard
+
+- Today’s Route (Map with integrated GPS)
+- Job View: Task Summary + AR View
+- Approve parts to buy / Upload Receipts
+- Voice commands via Google Assistant/Alexa
+- Inventory tab (if module enabled)
+---
+
+🧩 5. Modular Feature Management
+
+- Modular Settings Panel:
+	- Enable/disable:
+		- E-commerce
+		- Supply Shopping
+		- CRM Integration
+		- AI Pruning Assistant
+	- Price or toggle for Free/Pro tier
+---
+
+🏗️ Technical Architecture Overview (UI/UX Layer Only)
+
+
+📌 1. Core Platforms:
+
+- React Native (cross-platform UI logic)
+- Expo or bare workflow with custom native code
+---
+
+🔍 2. Core UI Integrations:
+
+Feature
+Platform
+Notes
+Camera Access
+Android / iOS
+Via react-native-camera or expo-camera
+AR Overlay
+iOS ARKit + Android ARCore
+Abstracted via ViroReact or 8thWall
+Voice Commands
+Google Assistant SDK + Alexa Skills Kit
+Limited to commands like “show today’s tasks”
+Image Editing
+Custom overlays + react-native-sketch-canvas or react-native-image-marker
+
+
+---
+
+🗂️ 3. Offline Data Strategy
+
+- SQLite (preferred for large forms + task records)
+- Use react-native-sqlite-storage or WatermelonDB
+- Sync logic:
+	- Flag unsynced changes
+	- Sync via FCM on reconnect
+---
+
+📬 4. Firebase Cloud Messaging (Push Notifications)
+
+- Use Firebase Admin SDK + FCM tokens per user
+- Best Practices:
+	- Group notifications (e.g., all Johnson home updates)
+	- Use silent push for data syncs
+	- Local notifications for low-connectivity zones
+	- Use Firebase Remote Config for A/B testing variants
+---
+
+🛒 5. In-App Purchases (Monetization Strategy)
+
+
+Monetization Options:
+
+- Freemium base
+- Add-on modules (e.g., voice, AR pruning, Stripe checkout, etc.)
+- Optional: Ads in Free tier (gardener dashboard only)
+---
+
+💳 6. Sample In-App Purchase Code
+
+
+✅ Android – Kotlin (Google Play Billing v6):
+
+```
+val billingClient = BillingClient.newBuilder(context)
+    .setListener(purchasesUpdatedListener)
+    .enablePendingPurchases()
+    .build()
+
+val skuList = listOf("arga_subscription_basic")
+val params = SkuDetailsParams.newBuilder()
+params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS)
+billingClient.querySkuDetailsAsync(params.build()) { billingResult, skuDetailsList ->
+    // Trigger UI flow
+}
+
+```
+
+✅ iOS – Swift (StoreKit):
+
+```
+let request = SKProductsRequest(productIdentifiers: ["arga_subscription_basic"])
+request.delegate = self
+request.start()
+
+func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+    if let product = response.products.first {
+        let payment = SKPayment(product: product)
+        SKPaymentQueue.default().add(payment)
+    }
+}
+
+```
+
+---
+
+🧭 Feature Roadmap (UI/UX Only)
+
+
+📦 MVP 1.0 – Launch Candidate
+
+- ✅ Login/Registration w/ Role Type
+- ✅ Live Camera Feed w/ AR Task Markup
+- ✅ Voice Notes
+- ✅ Task List Dashboard
+- ✅ Gardener Task Overlay
+- ✅ Firebase Push Notifications
+- ✅ SQLite/Realm local caching
+- ✅ Stripe Payment Integration (basic)
+
+🚀 Phase 2 – Monetization & Expansion
+
+- In-app subscription tiers + billing
+- Modular Feature Add-ons
+- Voice Assistant (Google/Alexa)
+- Connected Apps Marketplace (CRM, Sirius, Box, Google API)
+
+🔍 Phase 3 – Smart Assistant Integration
+
+- Gemini/Gemma Integration
+- AI plant pruning guidance
+- Robotic-compatible output
+- Auto image stitch AI preview
